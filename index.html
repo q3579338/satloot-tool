@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>客户端下载 · satloot 工具站</title>
+  <meta name="description" content="satloot 工具站客户端：行情、资金、监控与研究工具在 iOS、Android、Windows、macOS 保持同步。请从本页官方入口下载。">
+  <meta property="og:title" content="客户端下载 · satloot 工具站">
+  <meta property="og:description" content="行情、资金、监控与研究工具，在 iOS、Android、Windows、macOS 客户端保持同步。官方下载入口。">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233b82f6'/%3E%3Cpath d='M8 20.5L13 13.5L17 17L24.5 9' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <script>document.documentElement.classList.add('js-ready');</script>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --ink: #020617;
+      --ink-body: #171717;
+      --muted: #64748b;
+      --line: rgba(226, 232, 240, .8);
+      --brand: #3b82f6;
+      --brand-deep: #2563eb;
+      --accent: #8b5cf6;
+      --mesh-line: rgba(191, 219, 254, .6);
+      --dl-line: #e2e8f0;
+      --icon-bg: #eff6ff;
+      --icon-fg: #1d4ed8;
+      --pill-bg: #dbeafe;
+      --check: #2563eb;
+      --hover-line: #bfdbfe;
+      --nav-bg: rgba(255, 255, 255, .78);
+      --shadow-card: 0 18px 50px -35px rgba(15, 23, 42, .5);
+      --shadow-card-hover: 0 24px 56px -28px rgba(15, 23, 42, .48);
+      --shadow-dl: 0 12px 35px -18px rgba(15, 23, 42, .35);
+      --shadow-dl-hover: 0 16px 36px -16px rgba(15, 23, 42, .4);
+      --radius-xl: 24px;
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { max-width: 100%; height: auto; display: block; }
+    svg text {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    h1, h2, h3 { color: var(--ink); margin: 0; }
+    p { margin: 0; }
+
+    .wrap {
+      width: 100%;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: 16px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--brand-deep);
+      line-height: 1.3;
+    }
+
+    .grad-text {
+      background: linear-gradient(90deg, #2563eb 0%, #7c3aed 52%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    /* —— Nav —— */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 56px;
+      min-width: 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--ink);
+      letter-spacing: -.02em;
+      min-width: 0;
+      white-space: nowrap;
+    }
+    .brand svg { width: 26px; height: 26px; flex-shrink: 0; }
+    .nav-links {
+      display: flex;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .nav-links a {
+      font-size: 12px;
+      color: var(--muted);
+      padding: 6px 8px;
+      border-radius: 10px;
+      transition: all .3s ease;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--brand-deep); background: var(--icon-bg); }
+
+    /* —— Mesh panels —— */
+    .mesh {
+      border-radius: 2rem;
+      border: 1px solid var(--mesh-line);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 75% 15%, rgba(59, 130, 246, .20), transparent 25%),
+        radial-gradient(circle at 20% 75%, rgba(139, 92, 246, .18), transparent 30%),
+        var(--surface);
+    }
+    .mesh-swap {
+      background:
+        radial-gradient(circle at 20% 75%, rgba(59, 130, 246, .20), transparent 25%),
+        radial-gradient(circle at 75% 15%, rgba(139, 92, 246, .18), transparent 30%),
+        var(--surface);
+    }
+
+    /* —— Hero —— */
+    .hero-sec { padding: 28px 0 8px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 36px;
+      padding: 32px 20px 28px;
+      align-items: center;
+    }
+    .hero-copy, .hero-visual { min-width: 0; max-width: 100%; }
+    .hero h1 {
+      font-weight: 900;
+      letter-spacing: -.045em;
+      font-size: 36px;
+      line-height: 1.08;
+      margin: 14px 0 18px;
+    }
+    .h1-line { display: block; white-space: nowrap; }
+    .nowrap { white-space: nowrap; }
+    .lede {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 36em;
+      line-height: 1.7;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .dl-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .dl-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 80px;
+      min-width: 0;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--dl-line);
+      box-shadow: var(--shadow-dl);
+      transition: all .3s ease;
+    }
+    /* 下载地址尚未接入：不画成可点的假链接。去掉 href 后本就不可导航，
+       这里再给出视觉与无障碍上的"待开放"信号。接入真实地址时，把
+       data-pending 去掉、dl-ver 换回版本号即可，其余样式不用动。 */
+    .dl-card[data-pending] { cursor: default; }
+    .dl-card[data-pending]:hover { transform: none; box-shadow: var(--shadow-dl); border-color: var(--dl-line); }
+    .dl-card[data-pending] .dl-ver {
+      color: var(--brand-deep);
+      background: var(--icon-bg);
+      border-radius: 999px;
+      padding: 1px 8px;
+      align-self: flex-start;
+    }
+    .dl-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--hover-line);
+      box-shadow: var(--shadow-dl-hover);
+    }
+    .dl-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--icon-bg);
+      color: var(--icon-fg);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .dl-icon svg { width: 22px; height: 22px; }
+    .dl-meta { min-width: 0; }
+    .dl-kicker {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .02em;
+    }
+    .dl-title {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -.02em;
+      line-height: 1.3;
+    }
+    .dl-ver {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin-top: 22px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--ink-body);
+    }
+    .badge svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .hero-visual {
+      position: relative;
+      width: 100%;
+      max-width: 540px;
+      margin: 8px auto 0;
+    }
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: 16% 8% 12%;
+      background: radial-gradient(circle, rgba(59, 130, 246, .16), transparent 68%);
+      filter: blur(18px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .phones-svg { position: relative; z-index: 1; width: 100%; overflow: visible; }
+    .multi-pill {
+      position: relative;
+      z-index: 2;
+      margin: -6px auto 0;
+      width: max-content;
+      max-width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 16px 10px 18px;
+      box-shadow: 0 14px 32px -16px rgba(15, 23, 42, .38);
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .multi-pill b {
+      font-size: 10px;
+      letter-spacing: .16em;
+      color: var(--brand-deep);
+      font-weight: 800;
+    }
+    .multi-pill span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* —— Features —— */
+    .feat-sec { padding: 72px 0 24px; }
+    .feat-head { text-align: center; max-width: 640px; margin: 0 auto 36px; }
+    .feat-head h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin: 12px 0 12px;
+      line-height: 1.25;
+    }
+    .feat-head p { color: var(--muted); font-size: 16px; }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 28px;
+      width: 100%;
+    }
+    .filter-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink-body);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .3s ease;
+      white-space: nowrap;
+      width: 100%;
+      text-align: center;
+    }
+    .filter-btn:hover { border-color: var(--hover-line); color: var(--brand-deep); }
+    .filter-btn.is-active {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      box-shadow: 0 8px 20px -10px rgba(37, 99, 235, .8);
+    }
+
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .feat-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-card);
+      padding: 28px 24px 22px;
+      min-width: 0;
+      overflow: hidden;
+      transition: all .3s ease;
+    }
+    .feat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--hover-line);
+      box-shadow: var(--shadow-card-hover);
+    }
+    .feat-card.is-out {
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+    }
+    .feat-card .eyebrow { margin-bottom: 10px; }
+    .feat-card h3 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin-bottom: 10px;
+    }
+    .feat-card p {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.7;
+      overflow-wrap: break-word;
+    }
+    .feat-foot {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .card-mark {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 56px;
+      height: 40px;
+      pointer-events: none;
+      opacity: .9;
+    }
+
+    /* —— Native block —— */
+    .native-sec { padding: 56px 0 24px; }
+    .native {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 36px;
+      padding: 32px 20px;
+      align-items: center;
+    }
+    .native > * { min-width: 0; max-width: 100%; }
+    .native-copy h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.2;
+      margin: 12px 0 16px;
+    }
+    .native-copy .lede { margin-bottom: 24px; }
+    .points {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 16px;
+    }
+    .point {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      min-width: 0;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .point svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+    .phone-solo { max-width: 280px; margin: 0 auto; width: 100%; }
+
+    /* —— CTA —— */
+    .cta-sec { padding: 56px 0 32px; }
+    .cta {
+      text-align: center;
+      padding: 48px 20px 40px;
+    }
+    .cta h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -.035em;
+      margin-bottom: 12px;
+    }
+    .cta .lede { margin-inline: auto; }
+    .cta .dl-grid { margin-top: 28px; text-align: left; }
+    .cta-note {
+      margin-top: 22px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* —— Footer —— */
+    .foot {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 40px;
+      margin-top: 24px;
+    }
+    .foot-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .foot-links { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+    .foot-links a:hover { color: var(--brand-deep); }
+    .disclaimer {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    /* Reveal: visible by default so no-JS stays readable */
+    .js-ready .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .js-ready .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (min-width: 640px) {
+      .dl-grid { grid-template-columns: 1fr 1fr; }
+      .points { gap: 12px 24px; }
+      .point { font-size: 14.5px; gap: 10px; }
+      .hero { padding: 40px 36px 36px; }
+      .native { padding: 40px 36px; }
+      .cta { padding: 56px 40px 48px; }
+      .lede { font-size: 16px; }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .filter-btn { width: auto; }
+    }
+
+    @media (min-width: 768px) {
+      .wrap { padding-inline: 32px; }
+      .nav-inner { min-height: 64px; }
+      .brand { font-size: 15px; gap: 10px; }
+      .brand svg { width: 28px; height: 28px; }
+      .nav-links a { font-size: 13px; padding: 8px 10px; }
+      .filter-btn { padding: 8px 16px; font-size: 14px; }
+      .hero h1 { font-size: 60px; }
+      .feat-head h2, .native-copy h2, .cta h2 { font-size: 36px; }
+      .feat-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
+      .feat-sec { padding: 88px 0 32px; }
+      .native-sec, .cta-sec { padding: 64px 0 32px; }
+      .hero { gap: 28px; }
+      .multi-pill {
+        position: absolute;
+        right: 6%;
+        bottom: 8%;
+        margin: 0;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hero {
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, .9fr);
+        gap: 20px 28px;
+        padding: 44px 36px 40px;
+      }
+      .hero h1 { font-size: 64px; }
+      .feat-grid { grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+      .native {
+        grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+        gap: 48px;
+        padding: 48px 48px;
+      }
+      .cta .dl-grid { grid-template-columns: repeat(4, 1fr); }
+      .feat-head h2 { font-size: 40px; }
+      .native-copy h2, .cta h2 { font-size: 40px; }
+      .hero-visual { margin: 0; max-width: none; }
+    }
+
+    @media (min-width: 1280px) {
+      .hero {
+        padding: 52px 44px 48px;
+        gap: 24px 32px;
+      }
+      .hero h1 { font-size: 72px; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1220;
+        --surface: #111827;
+        --ink: #f8fafc;
+        --ink-body: #e2e8f0;
+        --muted: #94a3b8;
+        --line: rgba(51, 65, 85, .85);
+        --mesh-line: rgba(59, 130, 246, .28);
+        --dl-line: #334155;
+        --icon-bg: #1e3a5f;
+        --icon-fg: #93c5fd;
+        --pill-bg: #1e3a5f;
+        --check: #93c5fd;
+        --hover-line: #3b82f6;
+        --nav-bg: rgba(11, 18, 32, .78);
+        --shadow-card: 0 18px 50px -30px rgba(0, 0, 0, .7);
+        --shadow-card-hover: 0 24px 56px -24px rgba(0, 0, 0, .75);
+        --shadow-dl: 0 12px 35px -16px rgba(0, 0, 0, .55);
+      }
+      .filter-btn.is-active { color: #fff; }
+      .card-mark text { fill: #1f2937; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+      .js-ready .reveal,
+      .js-ready .reveal.is-in {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <defs>
+            <linearGradient id="logoG" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3b82f6"/>
+              <stop offset="1" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="8" fill="url(#logoG)"/>
+          <path d="M8 21L13.2 13.8L17.2 17.4L24 9.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        satloot 工具站
+      </a>
+      <nav class="nav-links" aria-label="站点">
+        <a href="https://bnbbang.com/">BNBBANG</a>
+        <a href="https://earn.satloot.com/">风控面板</a>
+        <a href="https://game.satloot.com/">游戏厅</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-sec">
+      <div class="wrap">
+        <div class="mesh hero">
+          <div class="hero-copy">
+            <span class="eyebrow">SATLOOT TOOLS</span>
+            <h1><span class="h1-line">把行情装进口袋</span><span class="h1-line grad-text">决策不再等电脑</span></h1>
+            <p class="lede">行情、资金、监控与研究工具，在 iOS、Android、Windows、macOS <span class="nowrap">客户端保持同步</span>。</p>
+
+            <div class="dl-grid">
+              <a class="dl-card" data-platform="ios" data-pending="1">
+                <span class="dl-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.37 12.29c.03-2.16 1.76-3.2 1.84-3.25-1.01-1.47-2.57-1.67-3.12-1.69-1.31-.14-2.58.78-3.25.78-.68 0-1.71-.76-2.82-.74-1.45.02-2.8.85-3.55 2.15-1.53 2.64-.39 6.54 1.08 8.68.73 1.05 1.59 2.22 2.72 2.18 1.1-.04 1.52-.7 2.85-.7 1.32 0 1.7.7 2.84.67 1.18-.02 1.92-1.06 2.63-2.12.84-1.21 1.18-2.39 1.2-2.45-.03-.01-2.29-.88-2.32-3.51zM14.46 5.27c.6-.73 1.01-1.75.9-2.77-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.68-.92 2.67.97.07 1.96-.49 2.56-1.21z"/></svg>
+                </span>
+                <span class="dl-meta">
+                  <span class="dl-kicker">Available for</span>
+                  <span class="dl-title">下载 iOS 版</span>
+                  <span class="dl-ver">即将开放</span>
+                </span>
+              </a>
+              <a class="dl-card" data-platform="android" data-pending="1">
+                <span class="dl-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.54-2.66a.4.4 0 00-.15-.55.4.4 0 00-.55.15l-1.56 2.7A8.4 8.4 0 0012 8.2a8.4 8.4 0 00-4.88.92L5.56 6.42a.4.4 0 00-.55-.15.4.4 0 00-.15.55L6.4 9.48A8.07 8.07 0 004 15.6v.2h16v-.2a8.07 8.07 0 00-2.4-6.12zM9.2 13.2a.8.8 0 110-1.6.8.8 0 010 1.6zm5.6 0a.8.8 0 110-1.6.8.8 0 010 1.6zM6.4 16.8h11.2c.22 0 .4.18.4.4v3.2A1.6 1.6 0 0116.4 22h-.4v-1.2h-7.2V22h-.4A1.6 1.6 0 016 20.4v-3.2c0-.22.18-.4.4-.4z"/></svg>
+                </span>
+                <span class="dl-meta">
+                  <span class="dl-kicker">Get it on</span>
+                  <span class="dl-title">下载 Android 版</span>
+                  <span class="dl-ver">即将开放</span>
+                </span>
+              </a>
+              <a class="dl-card" data-platform="windows" data-pending="1">
+                <span class="dl-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l8.2-1.12V12H3V5.5zm9.2-1.26L21 3v9H12.2V4.24zM3 13h8.2v7.62L3 19.5V13zm9.2 0H21v8l-8.8-1.24V13z"/></svg>
+                </span>
+                <span class="dl-meta">
+                  <span class="dl-kicker">Windows 10 / 11</span>
+                  <span class="dl-title">下载 PC 版</span>
+                  <span class="dl-ver">即将开放</span>
+                </span>
+              </a>
+              <a class="dl-card" data-platform="macos" data-pending="1">
+                <span class="dl-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="4" width="17" height="12" rx="2"/><path d="M8 20h8M12 16v4" stroke-linecap="round"/></svg>
+                </span>
+                <span class="dl-meta">
+                  <span class="dl-kicker">macOS 12+</span>
+                  <span class="dl-title">下载 Mac 版</span>
+                  <span class="dl-ver">即将开放</span>
+                </span>
+              </a>
+            </div>
+
+            <div class="badges">
+              <span class="badge">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--pill-bg)"/><path d="M4.4 8.2l2.3 2.3 5-5" fill="none" stroke="var(--check)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                官方下载地址
+              </span>
+              <span class="badge">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--pill-bg)"/><path d="M4.4 8.2l2.3 2.3 5-5" fill="none" stroke="var(--check)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                网页数据同步
+              </span>
+              <span class="badge">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--pill-bg)"/><path d="M4.4 8.2l2.3 2.3 5-5" fill="none" stroke="var(--check)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                账号权限一致
+              </span>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="false">
+            <svg class="phones-svg" viewBox="0 0 540 600" role="img" aria-label="satloot 客户端界面预览：行情列表与 K 线">
+              <defs>
+                <linearGradient id="shellStroke" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#94a3b8" stop-opacity=".7"/>
+                  <stop offset=".45" stop-color="#334155" stop-opacity=".2"/>
+                  <stop offset="1" stop-color="#60a5fa" stop-opacity=".45"/>
+                </linearGradient>
+                <linearGradient id="glassTint" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#fff" stop-opacity=".08"/>
+                  <stop offset=".4" stop-color="#fff" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#3b82f6" stop-opacity=".45"/>
+                  <stop offset="1" stop-color="#3b82f6" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="chartFillG" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#34d399" stop-opacity=".4"/>
+                  <stop offset="1" stop-color="#34d399" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="lineBlue" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#60a5fa"/>
+                  <stop offset="1" stop-color="#a78bfa"/>
+                </linearGradient>
+                <filter id="phoneSh" x="-30%" y="-20%" width="160%" height="150%">
+                  <feDropShadow dx="6" dy="22" stdDeviation="18" flood-color="#0f172a" flood-opacity=".32"/>
+                </filter>
+                <clipPath id="scrBack"><rect x="8" y="8" width="204" height="444" rx="30"/></clipPath>
+                <clipPath id="scrFront"><rect x="8" y="8" width="204" height="444" rx="30"/></clipPath>
+              </defs>
+
+              <!-- Back phone: K-line detail, tilted right -->
+              <g transform="translate(262,38) rotate(11 110 230)" filter="url(#phoneSh)">
+                <rect x="-3" y="92" width="4" height="36" rx="1.5" fill="#1e293b"/>
+                <rect x="-3" y="136" width="4" height="22" rx="1.5" fill="#1e293b"/>
+                <rect x="219" y="118" width="4" height="48" rx="1.5" fill="#1e293b"/>
+                <rect width="220" height="460" rx="40" fill="#0f172a"/>
+                <rect width="220" height="460" rx="40" fill="none" stroke="url(#shellStroke)" stroke-width="1.6"/>
+                <rect x="8" y="8" width="204" height="444" rx="30" fill="#020617"/>
+                <g clip-path="url(#scrBack)">
+                  <rect x="8" y="8" width="204" height="444" fill="#020617"/>
+                  <text x="22" y="42" fill="#94a3b8" font-size="10" font-family="var(--font)">9:41</text>
+                  <g transform="translate(168,30)" fill="#e2e8f0">
+                    <rect x="0" y="6" width="3" height="5" rx=".5"/>
+                    <rect x="4" y="4" width="3" height="7" rx=".5"/>
+                    <rect x="8" y="2" width="3" height="9" rx=".5"/>
+                    <rect x="12" y="0" width="3" height="11" rx=".5"/>
+                    <rect x="20" y="2" width="16" height="8" rx="1.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                    <rect x="21.5" y="3.4" width="11" height="5.2" rx=".8" fill="#4ade80"/>
+                  </g>
+                  <text x="20" y="68" fill="#64748b" font-size="10" font-family="var(--font)">BTC / USDT</text>
+                  <text x="20" y="92" fill="#f8fafc" font-size="20" font-weight="800" font-family="var(--font)">97,842.60</text>
+                  <rect x="20" y="102" width="58" height="18" rx="9" fill="#064e3b"/>
+                  <text x="49" y="115" text-anchor="middle" fill="#34d399" font-size="10" font-weight="700" font-family="var(--font)">+2.41%</text>
+                  <g transform="translate(16,132)">
+                    <line x1="0" y1="28" x2="188" y2="28" stroke="#1e293b" stroke-width=".8"/>
+                    <line x1="0" y1="56" x2="188" y2="56" stroke="#1e293b" stroke-width=".8"/>
+                    <line x1="0" y1="84" x2="188" y2="84" stroke="#1e293b" stroke-width=".8"/>
+                    <line x1="0" y1="112" x2="188" y2="112" stroke="#1e293b" stroke-width=".8"/>
+                    <path d="M0,96 L14,88 L28,92 L42,70 L56,76 L70,58 L84,64 L98,44 L112,50 L126,32 L140,38 L154,22 L168,28 L188,14 L188,128 L0,128 Z" fill="url(#chartFill)"/>
+                    <polyline points="0,96 14,88 28,92 42,70 56,76 70,58 84,64 98,44 112,50 126,32 140,38 154,22 168,28 188,14" fill="none" stroke="url(#lineBlue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="188" cy="14" r="3.2" fill="#a78bfa"/>
+                    <g fill="#3b82f6" opacity=".55">
+                      <rect x="6" y="132" width="6" height="18" rx="1"/>
+                      <rect x="20" y="138" width="6" height="12" rx="1"/>
+                      <rect x="34" y="128" width="6" height="22" rx="1"/>
+                      <rect x="48" y="134" width="6" height="16" rx="1"/>
+                      <rect x="62" y="122" width="6" height="28" rx="1"/>
+                      <rect x="76" y="130" width="6" height="20" rx="1"/>
+                      <rect x="90" y="118" width="6" height="32" rx="1"/>
+                      <rect x="104" y="126" width="6" height="24" rx="1"/>
+                      <rect x="118" y="114" width="6" height="36" rx="1"/>
+                      <rect x="132" y="124" width="6" height="26" rx="1"/>
+                      <rect x="146" y="110" width="6" height="40" rx="1"/>
+                      <rect x="160" y="120" width="6" height="30" rx="1"/>
+                      <rect x="174" y="106" width="6" height="44" rx="1"/>
+                    </g>
+                  </g>
+                  <g font-family="var(--font)">
+                    <rect x="16" y="312" width="58" height="52" rx="12" fill="#0f172a"/>
+                    <text x="45" y="332" text-anchor="middle" fill="#64748b" font-size="8">资金费率</text>
+                    <text x="45" y="350" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">0.012%</text>
+                    <rect x="81" y="312" width="58" height="52" rx="12" fill="#0f172a"/>
+                    <text x="110" y="332" text-anchor="middle" fill="#64748b" font-size="8">持仓量</text>
+                    <text x="110" y="350" text-anchor="middle" fill="#f8fafc" font-size="11" font-weight="700">28.4万</text>
+                    <rect x="146" y="312" width="58" height="52" rx="12" fill="#0f172a"/>
+                    <text x="175" y="332" text-anchor="middle" fill="#64748b" font-size="8">24h 额</text>
+                    <text x="175" y="350" text-anchor="middle" fill="#f8fafc" font-size="11" font-weight="700">12.8B</text>
+                  </g>
+                  <rect x="16" y="376" width="188" height="44" rx="12" fill="#1d4ed8"/>
+                  <text x="110" y="403" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="var(--font)">查看完整周期</text>
+                  <rect x="8" y="8" width="204" height="160" fill="url(#glassTint)"/>
+                </g>
+                <rect x="73" y="16" width="74" height="18" rx="9" fill="#000"/>
+                <rect x="80" y="438" width="60" height="5" rx="2.5" fill="#334155"/>
+              </g>
+
+              <!-- Front phone: ticker list, tilted left -->
+              <g transform="translate(48,78) rotate(-8 110 230)" filter="url(#phoneSh)">
+                <rect x="-3" y="96" width="4" height="34" rx="1.5" fill="#1e293b"/>
+                <rect x="-3" y="138" width="4" height="22" rx="1.5" fill="#1e293b"/>
+                <rect x="219" y="122" width="4" height="50" rx="1.5" fill="#1e293b"/>
+                <rect width="220" height="460" rx="40" fill="#0f172a"/>
+                <rect width="220" height="460" rx="40" fill="none" stroke="url(#shellStroke)" stroke-width="1.6"/>
+                <rect x="8" y="8" width="204" height="444" rx="30" fill="#020617"/>
+                <g clip-path="url(#scrFront)">
+                  <rect x="8" y="8" width="204" height="444" fill="#020617"/>
+                  <text x="22" y="42" fill="#94a3b8" font-size="10" font-family="var(--font)">9:41</text>
+                  <g transform="translate(168,30)" fill="#e2e8f0">
+                    <rect x="0" y="6" width="3" height="5" rx=".5"/>
+                    <rect x="4" y="4" width="3" height="7" rx=".5"/>
+                    <rect x="8" y="2" width="3" height="9" rx=".5"/>
+                    <rect x="12" y="0" width="3" height="11" rx=".5"/>
+                    <rect x="20" y="2" width="16" height="8" rx="1.5" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                    <rect x="21.5" y="3.4" width="11" height="5.2" rx=".8" fill="#4ade80"/>
+                  </g>
+                  <text x="20" y="70" fill="#f8fafc" font-size="18" font-weight="800" font-family="var(--font)">行情</text>
+                  <circle cx="58" cy="64" r="3.2" fill="#22c55e"/>
+                  <g font-family="var(--font)" font-size="9" font-weight="700">
+                    <rect x="18" y="80" width="40" height="18" rx="9" fill="#1d4ed8"/>
+                    <text x="38" y="92" text-anchor="middle" fill="#fff">自选</text>
+                    <rect x="62" y="80" width="40" height="18" rx="9" fill="#1e293b"/>
+                    <text x="82" y="92" text-anchor="middle" fill="#94a3b8">现货</text>
+                    <rect x="106" y="80" width="40" height="18" rx="9" fill="#1e293b"/>
+                    <text x="126" y="92" text-anchor="middle" fill="#94a3b8">合约</text>
+                  </g>
+                  <!-- mini k-line card -->
+                  <rect x="16" y="108" width="188" height="92" rx="14" fill="#0f172a" stroke="#1e293b"/>
+                  <text x="28" y="128" fill="#64748b" font-size="9" font-family="var(--font)">BTC  24h</text>
+                  <text x="28" y="148" fill="#f8fafc" font-size="14" font-weight="800" font-family="var(--font)">97,842.6</text>
+                  <text x="108" y="148" fill="#34d399" font-size="11" font-weight="700" font-family="var(--font)">+2,310</text>
+                  <path d="M24,176 L40,170 L54,173 L70,160 L86,164 L102,150 L118,154 L136,142 L152,146 L172,134 L192,128 L192,188 L24,188 Z" fill="url(#chartFillG)"/>
+                  <polyline points="24,176 40,170 54,173 70,160 86,164 102,150 118,154 136,142 152,146 172,134 192,128" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+                  <!-- ticker rows -->
+                  <g font-family="var(--font)">
+                    <rect x="16" y="210" width="188" height="42" rx="11" fill="#0b1220"/>
+                    <circle cx="36" cy="231" r="11" fill="#f59e0b"/>
+                    <text x="36" y="235" text-anchor="middle" font-size="10" font-weight="800" fill="#1c1917">B</text>
+                    <text x="52" y="227" font-size="12" font-weight="700" fill="#f8fafc">BTC</text>
+                    <text x="52" y="240" font-size="8" fill="#64748b">Bitcoin</text>
+                    <text x="142" y="227" text-anchor="end" font-size="11" font-weight="600" fill="#f8fafc">97,842.6</text>
+                    <rect x="148" y="222" width="48" height="18" rx="6" fill="#064e3b"/>
+                    <text x="172" y="235" text-anchor="middle" font-size="9" font-weight="700" fill="#34d399">+2.41%</text>
+
+                    <rect x="16" y="256" width="188" height="42" rx="11" fill="#0b1220"/>
+                    <circle cx="36" cy="277" r="11" fill="#818cf8"/>
+                    <text x="36" y="281" text-anchor="middle" font-size="10" font-weight="800" fill="#1e1b4b">E</text>
+                    <text x="52" y="273" font-size="12" font-weight="700" fill="#f8fafc">ETH</text>
+                    <text x="52" y="286" font-size="8" fill="#64748b">Ethereum</text>
+                    <text x="142" y="273" text-anchor="end" font-size="11" font-weight="600" fill="#f8fafc">3,421.18</text>
+                    <rect x="148" y="268" width="48" height="18" rx="6" fill="#4c0519"/>
+                    <text x="172" y="281" text-anchor="middle" font-size="9" font-weight="700" fill="#f87171">-0.82%</text>
+
+                    <rect x="16" y="302" width="188" height="42" rx="11" fill="#0b1220"/>
+                    <circle cx="36" cy="323" r="11" fill="#22d3ee"/>
+                    <text x="36" y="327" text-anchor="middle" font-size="10" font-weight="800" fill="#083344">S</text>
+                    <text x="52" y="319" font-size="12" font-weight="700" fill="#f8fafc">SOL</text>
+                    <text x="52" y="332" font-size="8" fill="#64748b">Solana</text>
+                    <text x="142" y="319" text-anchor="end" font-size="11" font-weight="600" fill="#f8fafc">198.54</text>
+                    <rect x="148" y="314" width="48" height="18" rx="6" fill="#064e3b"/>
+                    <text x="172" y="327" text-anchor="middle" font-size="9" font-weight="700" fill="#34d399">+5.13%</text>
+
+                    <rect x="16" y="348" width="188" height="42" rx="11" fill="#0b1220"/>
+                    <circle cx="36" cy="369" r="11" fill="#fbbf24"/>
+                    <text x="36" y="373" text-anchor="middle" font-size="10" font-weight="800" fill="#422006">B</text>
+                    <text x="52" y="365" font-size="12" font-weight="700" fill="#f8fafc">BNB</text>
+                    <text x="52" y="378" font-size="8" fill="#64748b">BNB</text>
+                    <text x="142" y="365" text-anchor="end" font-size="11" font-weight="600" fill="#f8fafc">612.30</text>
+                    <rect x="148" y="360" width="48" height="18" rx="6" fill="#064e3b"/>
+                    <text x="172" y="373" text-anchor="middle" font-size="9" font-weight="700" fill="#34d399">+1.24%</text>
+
+                    <rect x="16" y="394" width="188" height="42" rx="11" fill="#0b1220"/>
+                    <circle cx="36" cy="415" r="11" fill="#94a3b8"/>
+                    <text x="36" y="419" text-anchor="middle" font-size="10" font-weight="800" fill="#0f172a">X</text>
+                    <text x="52" y="411" font-size="12" font-weight="700" fill="#f8fafc">XRP</text>
+                    <text x="52" y="424" font-size="8" fill="#64748b">Ripple</text>
+                    <text x="142" y="411" text-anchor="end" font-size="11" font-weight="600" fill="#f8fafc">2.418</text>
+                    <rect x="148" y="406" width="48" height="18" rx="6" fill="#4c0519"/>
+                    <text x="172" y="419" text-anchor="middle" font-size="9" font-weight="700" fill="#f87171">-1.05%</text>
+                  </g>
+                  <rect x="8" y="8" width="204" height="150" fill="url(#glassTint)"/>
+                </g>
+                <rect x="73" y="16" width="74" height="18" rx="9" fill="#000"/>
+                <rect x="80" y="438" width="60" height="5" rx="2.5" fill="#334155"/>
+              </g>
+            </svg>
+            <div class="multi-pill">
+              <b>MULTI-PLATFORM</b>
+              <span>iOS · Android · Windows · Mac</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="feat-sec" id="features">
+      <div class="wrap">
+        <div class="feat-head reveal">
+          <span class="eyebrow">FEATURED CAPABILITIES</span>
+          <h2>为移动决策精选的功能</h2>
+          <p>把网页端已经在用的数据能力，收进更适合指尖操作的界面——行情、研究与账户，打开就能用。</p>
+        </div>
+
+        <div class="filters" role="toolbar" aria-label="功能分类">
+          <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">全部</button>
+          <button type="button" class="filter-btn" data-filter="行情动态" aria-pressed="false">行情动态</button>
+          <button type="button" class="filter-btn" data-filter="研究工具" aria-pressed="false">研究工具</button>
+          <button type="button" class="filter-btn" data-filter="交易管理" aria-pressed="false">交易管理</button>
+        </div>
+
+        <div class="feat-grid">
+          <article class="feat-card reveal" data-cat="行情动态">
+            <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">01</text></svg>
+            <span class="eyebrow">MARKET PULSE</span>
+            <h3>多维行情中心</h3>
+            <p>持仓量、成交量、资金费率与实时价格一屏聚合，交易所和市场随手切换。</p>
+            <div class="feat-foot">网页能力原生同步</div>
+          </article>
+          <article class="feat-card reveal" data-cat="研究工具">
+            <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">02</text></svg>
+            <span class="eyebrow">SMART RADAR</span>
+            <h3>资金与叙事雷达</h3>
+            <p>资金流向、板块轮动与策略候选同步网页端，异动一眼看清。</p>
+            <div class="feat-foot">网页能力原生同步</div>
+          </article>
+          <article class="feat-card reveal" data-cat="行情动态">
+            <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">03</text></svg>
+            <span class="eyebrow">LIVE SIGNAL</span>
+            <h3>极速市场消息</h3>
+            <p>交易所公告与市场快讯集中推送，省掉在多个平台之间来回切换。</p>
+            <div class="feat-foot">网页能力原生同步</div>
+          </article>
+          <article class="feat-card reveal" data-cat="研究工具">
+            <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">04</text></svg>
+            <span class="eyebrow">MASTER MIND</span>
+            <h3>交易心法库</h3>
+            <p>按作者、专栏和关键词检索交易文章，原生图文阅读，随时复盘。</p>
+            <div class="feat-foot">网页能力原生同步</div>
+          </article>
+          <article class="feat-card reveal" data-cat="研究工具">
+            <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">05</text></svg>
+            <span class="eyebrow">CYCLE LAB</span>
+            <h3>历史规律</h3>
+            <p>复盘 BTC 周期、山寨波段与资金轮动，图表与统计口径完整同步。</p>
+            <div class="feat-foot">网页能力原生同步</div>
+          </article>
+          <article class="feat-card reveal" data-cat="交易管理">
+            <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">06</text></svg>
+            <span class="eyebrow">LIVE TRADING</span>
+            <h3>实盘与账户</h3>
+            <p>授权用户可查看实盘曲线、成交记录与账户权益，权限与网页一致。</p>
+            <div class="feat-foot">网页能力原生同步</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="native-sec">
+      <div class="wrap">
+        <div class="mesh mesh-swap native reveal">
+          <div class="phone-solo">
+            <svg viewBox="-8 -4 256 512" role="img" aria-label="satloot 客户端发现页：搜索、功能宫格与快讯列表">
+              <defs>
+                <linearGradient id="shellStroke2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#94a3b8" stop-opacity=".7"/>
+                  <stop offset=".45" stop-color="#334155" stop-opacity=".2"/>
+                  <stop offset="1" stop-color="#60a5fa" stop-opacity=".45"/>
+                </linearGradient>
+                <clipPath id="scrDisc"><rect x="10" y="10" width="220" height="480" rx="34"/></clipPath>
+                <filter id="soloSh" x="-25%" y="-10%" width="150%" height="130%">
+                  <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#0f172a" flood-opacity=".28"/>
+                </filter>
+              </defs>
+              <g transform="rotate(-3 120 250)" filter="url(#soloSh)">
+                <rect x="-3" y="110" width="5" height="38" rx="2" fill="#1e293b"/>
+                <rect x="-3" y="156" width="5" height="24" rx="2" fill="#1e293b"/>
+                <rect x="238" y="130" width="5" height="52" rx="2" fill="#1e293b"/>
+                <rect width="240" height="500" rx="42" fill="#0f172a"/>
+                <rect width="240" height="500" rx="42" fill="none" stroke="url(#shellStroke2)" stroke-width="1.6"/>
+                <rect x="10" y="10" width="220" height="480" rx="34" fill="#020617"/>
+                <g clip-path="url(#scrDisc)" font-family="var(--font)">
+                  <rect x="10" y="10" width="220" height="480" fill="#020617"/>
+                  <text x="24" y="46" fill="#94a3b8" font-size="11">9:41</text>
+                  <text x="24" y="78" fill="#f8fafc" font-size="20" font-weight="800">发现</text>
+                  <rect x="22" y="92" width="196" height="34" rx="17" fill="#1e293b"/>
+                  <circle cx="40" cy="109" r="7" fill="none" stroke="#64748b" stroke-width="1.6"/>
+                  <line x1="45" y1="114" x2="50" y2="119" stroke="#64748b" stroke-width="1.6" stroke-linecap="round"/>
+                  <text x="58" y="114" fill="#64748b" font-size="11">搜索币种、策略、专栏</text>
+
+                  <g font-size="9" font-weight="700" text-anchor="middle">
+                    <rect x="22" y="140" width="58" height="58" rx="16" fill="#0f172a"/>
+                    <rect x="38" y="150" width="26" height="26" rx="8" fill="#1d4ed8"/>
+                    <text x="51" y="188" fill="#cbd5e1">行情</text>
+                    <rect x="91" y="140" width="58" height="58" rx="16" fill="#0f172a"/>
+                    <rect x="107" y="150" width="26" height="26" rx="8" fill="#7c3aed"/>
+                    <text x="120" y="188" fill="#cbd5e1">雷达</text>
+                    <rect x="160" y="140" width="58" height="58" rx="16" fill="#0f172a"/>
+                    <rect x="176" y="150" width="26" height="26" rx="8" fill="#0ea5e9"/>
+                    <text x="189" y="188" fill="#cbd5e1">快讯</text>
+                    <rect x="22" y="206" width="58" height="58" rx="16" fill="#0f172a"/>
+                    <rect x="38" y="216" width="26" height="26" rx="8" fill="#f59e0b"/>
+                    <text x="51" y="254" fill="#cbd5e1">心法</text>
+                    <rect x="91" y="206" width="58" height="58" rx="16" fill="#0f172a"/>
+                    <rect x="107" y="216" width="26" height="26" rx="8" fill="#10b981"/>
+                    <text x="120" y="254" fill="#cbd5e1">周期</text>
+                    <rect x="160" y="206" width="58" height="58" rx="16" fill="#0f172a"/>
+                    <rect x="176" y="216" width="26" height="26" rx="8" fill="#64748b"/>
+                    <text x="189" y="254" fill="#cbd5e1">账户</text>
+                  </g>
+
+                  <text x="24" y="290" fill="#f8fafc" font-size="13" font-weight="700">市场快讯</text>
+                  <rect x="22" y="302" width="196" height="50" rx="12" fill="#0f172a"/>
+                  <rect x="22" y="314" width="4" height="26" rx="2" fill="#3b82f6"/>
+                  <text x="36" y="322" fill="#f8fafc" font-size="11" font-weight="600">BTC 突破盘整上沿</text>
+                  <text x="36" y="338" fill="#64748b" font-size="9">资金费率转正 · 2 分钟前</text>
+                  <rect x="22" y="358" width="196" height="50" rx="12" fill="#0f172a"/>
+                  <rect x="22" y="370" width="4" height="26" rx="2" fill="#8b5cf6"/>
+                  <text x="36" y="378" fill="#f8fafc" font-size="11" font-weight="600">板块轮动：AI 叙事回暖</text>
+                  <text x="36" y="394" fill="#64748b" font-size="9">雷达同步网页端 · 11 分钟前</text>
+                  <rect x="22" y="414" width="196" height="50" rx="12" fill="#0f172a"/>
+                  <rect x="22" y="426" width="4" height="26" rx="2" fill="#10b981"/>
+                  <text x="36" y="434" fill="#f8fafc" font-size="11" font-weight="600">账户权益日内 +1.8%</text>
+                  <text x="36" y="450" fill="#64748b" font-size="9">实盘曲线已更新 · 刚刚</text>
+                </g>
+                <rect x="83" y="18" width="74" height="18" rx="9" fill="#000"/>
+                <rect x="90" y="476" width="60" height="5" rx="2.5" fill="#334155"/>
+              </g>
+            </svg>
+          </div>
+          <div class="native-copy">
+            <span class="eyebrow">ONE ACCOUNT · EVERY PLATFORM</span>
+            <h2><span class="h1-line">不是简化版网页</span><span class="h1-line grad-text">而是完整的客户端体验</span></h2>
+            <p class="lede">同一套账号在网页与客户端之间连续使用。行情、研究与账户数据同源，交互按设备单独打磨，而不是把网页缩小后塞进手机。</p>
+            <div class="points">
+              <div class="point">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--pill-bg)"/><path d="M4.4 8.2l2.3 2.3 5-5" fill="none" stroke="var(--check)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                原生界面与设备交互
+              </div>
+              <div class="point">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--pill-bg)"/><path d="M4.4 8.2l2.3 2.3 5-5" fill="none" stroke="var(--check)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                账号权限实时同步
+              </div>
+              <div class="point">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--pill-bg)"/><path d="M4.4 8.2l2.3 2.3 5-5" fill="none" stroke="var(--check)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                行情与研究数据同源
+              </div>
+              <div class="point">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--pill-bg)"/><path d="M4.4 8.2l2.3 2.3 5-5" fill="none" stroke="var(--check)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                重要功能持续更新
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-sec" id="download">
+      <div class="wrap">
+        <div class="mesh cta reveal">
+          <h2>现在，随时掌握市场</h2>
+          <p class="lede">选好设备，从本页入口安装 satloot 工具站客户端。下载地址由官方统一维护。</p>
+          <div class="dl-grid">
+            <a class="dl-card" data-platform="ios" data-pending="1">
+              <span class="dl-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.37 12.29c.03-2.16 1.76-3.2 1.84-3.25-1.01-1.47-2.57-1.67-3.12-1.69-1.31-.14-2.58.78-3.25.78-.68 0-1.71-.76-2.82-.74-1.45.02-2.8.85-3.55 2.15-1.53 2.64-.39 6.54 1.08 8.68.73 1.05 1.59 2.22 2.72 2.18 1.1-.04 1.52-.7 2.85-.7 1.32 0 1.7.7 2.84.67 1.18-.02 1.92-1.06 2.63-2.12.84-1.21 1.18-2.39 1.2-2.45-.03-.01-2.29-.88-2.32-3.51zM14.46 5.27c.6-.73 1.01-1.75.9-2.77-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.68-.92 2.67.97.07 1.96-.49 2.56-1.21z"/></svg>
+              </span>
+              <span class="dl-meta">
+                <span class="dl-kicker">Available for</span>
+                <span class="dl-title">下载 iOS 版</span>
+                <span class="dl-ver">即将开放</span>
+              </span>
+            </a>
+            <a class="dl-card" data-platform="android" data-pending="1">
+              <span class="dl-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.54-2.66a.4.4 0 00-.15-.55.4.4 0 00-.55.15l-1.56 2.7A8.4 8.4 0 0012 8.2a8.4 8.4 0 00-4.88.92L5.56 6.42a.4.4 0 00-.55-.15.4.4 0 00-.15.55L6.4 9.48A8.07 8.07 0 004 15.6v.2h16v-.2a8.07 8.07 0 00-2.4-6.12zM9.2 13.2a.8.8 0 110-1.6.8.8 0 010 1.6zm5.6 0a.8.8 0 110-1.6.8.8 0 010 1.6zM6.4 16.8h11.2c.22 0 .4.18.4.4v3.2A1.6 1.6 0 0116.4 22h-.4v-1.2h-7.2V22h-.4A1.6 1.6 0 016 20.4v-3.2c0-.22.18-.4.4-.4z"/></svg>
+              </span>
+              <span class="dl-meta">
+                <span class="dl-kicker">Get it on</span>
+                <span class="dl-title">下载 Android 版</span>
+                <span class="dl-ver">即将开放</span>
+              </span>
+            </a>
+            <a class="dl-card" data-platform="windows" data-pending="1">
+              <span class="dl-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l8.2-1.12V12H3V5.5zm9.2-1.26L21 3v9H12.2V4.24zM3 13h8.2v7.62L3 19.5V13zm9.2 0H21v8l-8.8-1.24V13z"/></svg>
+              </span>
+              <span class="dl-meta">
+                <span class="dl-kicker">Windows 10 / 11</span>
+                <span class="dl-title">下载 PC 版</span>
+                <span class="dl-ver">即将开放</span>
+              </span>
+            </a>
+            <a class="dl-card" data-platform="macos" data-pending="1">
+              <span class="dl-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="4" width="17" height="12" rx="2"/><path d="M8 20h8M12 16v4" stroke-linecap="round"/></svg>
+              </span>
+              <span class="dl-meta">
+                <span class="dl-kicker">macOS 12+</span>
+                <span class="dl-title">下载 Mac 版</span>
+                <span class="dl-ver">即将开放</span>
+              </span>
+            </a>
+          </div>
+          <p class="cta-note">请仅通过本页面提供的官方地址下载</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-row">
+        <span>© 2026 satloot</span>
+        <div class="foot-links">
+          <a href="https://satloot.com/" rel="noopener">satloot 项目总览</a>
+          <a href="https://sim.satloot.com/" rel="noopener">合约模拟器</a>
+          <a href="https://bnbbang.com/" rel="noopener">BNBBANG 镜像宇宙</a>
+          <a href="https://earn.satloot.com/" rel="noopener">riskdesk 风控面板</a>
+          <a href="https://airdrop.satloot.com/" rel="noopener">空投雷达</a>
+          <a href="https://game.satloot.com/" rel="noopener">satloot 游戏厅</a>
+          <a href="https://faucet.satloot.com/" rel="noopener">比特币测试网水龙头</a>
+        </div>
+      </div>
+      <p class="disclaimer">本站展示的数据与指标来源于公开互联网整理，可能存在延迟或口径差异，仅供参考，不构成投资建议。</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var reveals = document.querySelectorAll('.reveal');
+      if (reduce || !('IntersectionObserver' in window)) {
+        for (var i = 0; i < reveals.length; i++) reveals[i].classList.add('is-in');
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+        var vh = window.innerHeight || 0;
+        for (var j = 0; j < reveals.length; j++) {
+          var el = reveals[j];
+          if (el.getBoundingClientRect().top < vh) el.classList.add('is-in');
+          io.observe(el);
+        }
+        window.setTimeout(function () {
+          for (var t = 0; t < reveals.length; t++) reveals[t].classList.add('is-in');
+        }, 1200);
+      }
+
+      var buttons = document.querySelectorAll('.filter-btn');
+      var cards = document.querySelectorAll('.feat-card');
+      var HIDE_MS = 300;
+
+      function applyFilter(cat) {
+        for (var i = 0; i < cards.length; i++) {
+          (function (card) {
+            var match = cat === 'all' || card.getAttribute('data-cat') === cat;
+            var hiddenNow = card.style.display === 'none';
+            if (match) {
+              // 先撤掉还在飞行中的隐藏定时器。不撤的话，连点切换时它会赶在
+              // 双 rAF 之前落地，把刚要显示的卡片按成 display:none，随后 is-out
+              // 又被 rAF 移除 —— 卡片就卡在"隐藏且无标记"的状态，再也回不来。
+              if (card._hideTimer) {
+                window.clearTimeout(card._hideTimer);
+                card._hideTimer = null;
+              }
+              if (hiddenNow || card.classList.contains('is-out')) {
+                card.style.display = '';
+                card.classList.add('is-out');
+                var clearOut = function () { card.classList.remove('is-out'); };
+                // 双 rAF 是为了让浏览器先落一帧再起过渡，否则动画不播。
+                requestAnimationFrame(function () { requestAnimationFrame(clearOut); });
+                // 但 rAF 在后台标签页会被节流暂停，一旦不触发，is-out 就永久留在
+                // 卡片上，下次筛选的隐藏分支会被 guard 跳过，该藏的卡片藏不掉。
+                // 补一个定时器兜底，让正确性不依赖 rAF 是否落地。
+                window.setTimeout(clearOut, 60);
+              }
+            } else if (!card.classList.contains('is-out') && !hiddenNow) {
+              card.classList.add('is-out');
+              card._hideTimer = window.setTimeout(function () {
+                card._hideTimer = null;
+                if (card.classList.contains('is-out')) card.style.display = 'none';
+              }, HIDE_MS);
+            }
+          })(cards[i]);
+        }
+      }
+
+      for (var k = 0; k < buttons.length; k++) {
+        buttons[k].addEventListener('click', function () {
+          var cat = this.getAttribute('data-filter');
+          for (var n = 0; n < buttons.length; n++) {
+            var on = buttons[n] === this;
+            buttons[n].classList.toggle('is-active', on);
+            buttons[n].setAttribute('aria-pressed', on ? 'true' : 'false');
+          }
+          applyFilter(cat);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
