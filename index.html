@@ -126,6 +126,25 @@
       white-space: nowrap;
     }
     .nav-links a:hover { color: var(--brand-deep); background: var(--icon-bg); }
+    .nav-links a.lang-switch {
+      margin-left: 4px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-weight: 700;
+      color: var(--ink);
+      background: var(--surface);
+    }
+    .nav-links a.lang-switch:hover { border-color: var(--hover-line); color: var(--brand-deep); background: var(--surface); }
+    @media (max-width: 479px) {
+      .nav-links { gap: 0; }
+      .nav-links a { padding: 6px 5px; }
+      .nav-links a.lang-switch { padding: 4px 8px; margin-left: 2px; }
+      .brand { font-size: 13px; gap: 6px; }
+    }
+    @media (max-width: 399px) {
+      .brand-name { display: none; }
+    }
 
     /* —— Mesh panels —— */
     .mesh {
@@ -162,6 +181,11 @@
       margin: 14px 0 18px;
     }
     .h1-line { display: block; white-space: nowrap; }
+    html:lang(en) .h1-line { white-space: normal; }
+    html:lang(en) .hero h1 { font-size: 28px; }
+    @media (min-width: 768px) { html:lang(en) .hero h1 { font-size: 54px; } }
+    @media (min-width: 1024px) { html:lang(en) .hero h1 { font-size: 46px; } }
+    @media (min-width: 1280px) { html:lang(en) .hero h1 { font-size: 54px; } }
     .nowrap { white-space: nowrap; }
     .lede {
       font-size: 15px;
@@ -592,7 +616,7 @@
 <body>
   <header class="nav">
     <div class="wrap nav-inner">
-      <a class="brand" href="/">
+      <a class="brand" href="/" aria-label="satloot 工具站">
         <svg viewBox="0 0 32 32" aria-hidden="true">
           <defs>
             <linearGradient id="logoG" x1="0" y1="0" x2="1" y2="1">
@@ -603,12 +627,13 @@
           <rect width="32" height="32" rx="8" fill="url(#logoG)"/>
           <path d="M8 21L13.2 13.8L17.2 17.4L24 9.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        satloot 工具站
+        <span class="brand-name">satloot 工具站</span>
       </a>
       <nav class="nav-links" aria-label="站点">
         <a href="https://bnbbang.com/">BNBBANG</a>
         <a href="https://earn.satloot.com/">风控面板</a>
         <a href="https://game.satloot.com/">游戏厅</a>
+        <a class="lang-switch" href="/en/" hreflang="en" lang="en" data-nolang>English</a>
       </nav>
     </div>
   </header>
@@ -887,48 +912,48 @@
 
         <div class="filters" role="toolbar" aria-label="功能分类">
           <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">全部</button>
-          <button type="button" class="filter-btn" data-filter="行情动态" aria-pressed="false">行情动态</button>
-          <button type="button" class="filter-btn" data-filter="研究工具" aria-pressed="false">研究工具</button>
-          <button type="button" class="filter-btn" data-filter="交易管理" aria-pressed="false">交易管理</button>
+          <button type="button" class="filter-btn" data-filter="market" aria-pressed="false">行情动态</button>
+          <button type="button" class="filter-btn" data-filter="research" aria-pressed="false">研究工具</button>
+          <button type="button" class="filter-btn" data-filter="trading" aria-pressed="false">交易管理</button>
         </div>
 
         <div class="feat-grid">
-          <article class="feat-card reveal" data-cat="行情动态">
+          <article class="feat-card reveal" data-cat="market">
             <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">01</text></svg>
             <span class="eyebrow">MARKET PULSE</span>
             <h3>多维行情中心</h3>
             <p>持仓量、成交量、资金费率与实时价格一屏聚合，交易所和市场随手切换。</p>
             <div class="feat-foot">网页能力原生同步</div>
           </article>
-          <article class="feat-card reveal" data-cat="研究工具">
+          <article class="feat-card reveal" data-cat="research">
             <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">02</text></svg>
             <span class="eyebrow">SMART RADAR</span>
             <h3>资金与叙事雷达</h3>
             <p>资金流向、板块轮动与策略候选同步网页端，异动一眼看清。</p>
             <div class="feat-foot">网页能力原生同步</div>
           </article>
-          <article class="feat-card reveal" data-cat="行情动态">
+          <article class="feat-card reveal" data-cat="market">
             <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">03</text></svg>
             <span class="eyebrow">LIVE SIGNAL</span>
             <h3>极速市场消息</h3>
             <p>交易所公告与市场快讯集中推送，省掉在多个平台之间来回切换。</p>
             <div class="feat-foot">网页能力原生同步</div>
           </article>
-          <article class="feat-card reveal" data-cat="研究工具">
+          <article class="feat-card reveal" data-cat="research">
             <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">04</text></svg>
             <span class="eyebrow">MASTER MIND</span>
             <h3>交易心法库</h3>
             <p>按作者、专栏和关键词检索交易文章，原生图文阅读，随时复盘。</p>
             <div class="feat-foot">网页能力原生同步</div>
           </article>
-          <article class="feat-card reveal" data-cat="研究工具">
+          <article class="feat-card reveal" data-cat="research">
             <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">05</text></svg>
             <span class="eyebrow">CYCLE LAB</span>
             <h3>历史规律</h3>
             <p>复盘 BTC 周期、山寨波段与资金轮动，图表与统计口径完整同步。</p>
             <div class="feat-foot">网页能力原生同步</div>
           </article>
-          <article class="feat-card reveal" data-cat="交易管理">
+          <article class="feat-card reveal" data-cat="trading">
             <svg class="card-mark" viewBox="0 0 56 40" aria-hidden="true"><text x="56" y="32" text-anchor="end" font-size="28" font-weight="800" fill="#e2e8f0" font-family="var(--font)">06</text></svg>
             <span class="eyebrow">LIVE TRADING</span>
             <h3>实盘与账户</h3>
@@ -1099,9 +1124,11 @@
           <a href="https://satloot.com/" rel="noopener">satloot 项目总览</a>
           <a href="https://sim.satloot.com/" rel="noopener">合约模拟器</a>
           <a href="https://bnbbang.com/" rel="noopener">BNBBANG 镜像宇宙</a>
+          <a href="https://bang.satloot.com/" rel="noopener">BTCBANG 比特宇宙</a>
           <a href="https://earn.satloot.com/" rel="noopener">riskdesk 风控面板</a>
           <a href="https://airdrop.satloot.com/" rel="noopener">空投雷达</a>
           <a href="https://game.satloot.com/" rel="noopener">satloot 游戏厅</a>
+          <a href="https://trx.satloot.com/" rel="noopener">TRX 质押收益计算器</a>
           <a href="https://faucet.satloot.com/" rel="noopener">比特币测试网水龙头</a>
         </div>
       </div>
@@ -1133,6 +1160,13 @@
         window.setTimeout(function () {
           for (var t = 0; t < reveals.length; t++) reveals[t].classList.add('is-in');
         }, 1200);
+      }
+
+      var langSwitch = document.querySelector('.lang-switch');
+      if (langSwitch) {
+        langSwitch.addEventListener('click', function () {
+          try { localStorage.setItem('satloot.lang', this.getAttribute('lang')); } catch (e) {}
+        });
       }
 
       var buttons = document.querySelectorAll('.filter-btn');
