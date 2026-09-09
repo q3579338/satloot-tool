@@ -18,6 +18,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
 const ORIGIN = 'https://tool.satloot.com';
 const LS_KEY = 'satloot.lang';
+const OG_IMAGE = `${ORIGIN}/assets/og.png`;      // 1200×630，tools/make-og.mjs 生成，源文件在 assets/
+const LOGO_512 = `${ORIGIN}/assets/logo-512.png`;
+const THEME = '#f7f8fa';
 
 const SRC = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const DICT = JSON.parse(fs.readFileSync(path.join(ROOT, 'i18n', 'en.json'), 'utf8'));
@@ -98,11 +101,33 @@ function headLinks(lang) {
   return [
     `<meta property="og:url" content="${url}">`,
     `<meta property="og:locale" content="${lang === 'en' ? 'en_US' : 'zh_CN'}">`,
+    `<meta property="og:locale:alternate" content="${lang === 'en' ? 'zh_CN' : 'en_US'}">`,
     `<link rel="canonical" href="${url}">`,
     `<link rel="alternate" hreflang="zh-CN" href="${ORIGIN}/">`,
     `<link rel="alternate" hreflang="en" href="${ORIGIN}/en/">`,
     `<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">`,
   ].map((l) => '  ' + l).join('\n') + '\n';
+}
+
+const unesc = (s) => String(s).replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+/** JSON-LD（@graph：Organization + WebSite + WebPage + SoftwareApplication），标题/描述取自该语言页面自身的 <title> 与 meta description */
+function jsonld(html, lang) {
+  const en = lang === 'en';
+  const url = en ? `${ORIGIN}/en/` : `${ORIGIN}/`;
+  const inLanguage = en ? 'en' : 'zh-CN';
+  const title = unesc((html.match(/<title>([^<]*)<\/title>/) || [, ''])[1]);
+  const desc = unesc((html.match(/<meta name="description" content="([^"]*)"/) || [, ''])[1]);
+  const graph = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'Organization', '@id': `${ORIGIN}/#org`, name: 'satloot', url: 'https://satloot.com/', logo: { '@type': 'ImageObject', url: LOGO_512, width: 512, height: 512 }, sameAs: ['https://github.com/q3579338'] },
+      { '@type': 'WebSite', '@id': `${ORIGIN}/#website`, name: en ? 'satloot Tools' : 'satloot 工具站', url: `${ORIGIN}/`, inLanguage, publisher: { '@id': `${ORIGIN}/#org` } },
+      { '@type': 'WebPage', '@id': url, url, name: title, description: desc, inLanguage, isPartOf: { '@id': `${ORIGIN}/#website` }, primaryImageOfPage: { '@type': 'ImageObject', url: OG_IMAGE, width: 1200, height: 630 } },
+      { '@type': 'SoftwareApplication', '@id': `${ORIGIN}/#app`, name: en ? 'satloot Tools client' : 'satloot 工具站客户端', url, description: desc, image: OG_IMAGE, inLanguage,
+        applicationCategory: 'FinanceApplication', operatingSystem: 'iOS, Android, Windows, macOS', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@id': `${ORIGIN}/#org` } },
+    ],
+  };
+  return mustReplace(html, '</head>', `  <script type="application/ld+json">${JSON.stringify(graph).replace(/</g, '\\u003c')}</script>\n</head>`, '</head>');
 }
 
 // 首访语言跳转：只在 / 上跑；记过选择（点过语言切换）就不跳；浏览器语言不以 zh 开头才跳 /en/
@@ -128,12 +153,21 @@ if (!en.includes('hreflang="zh-CN" lang="zh-CN"')) throw new Error('build: 源�
 en = mustReplace(en, 'class="brand" href="/"', 'class="brand" href="/en/"', '品牌链接');
 en = stripComments(en);
 en = absolutize(en);
+zh = jsonld(zh, 'zh');
+en = jsonld(en, 'en');
 
 // ---- 落盘 ----
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(path.join(DIST, 'en'), { recursive: true });
 fs.writeFileSync(path.join(DIST, 'index.html'), zh);
 fs.writeFileSync(path.join(DIST, 'en', 'index.html'), en);
+// 静态资源（og.png / logo-*.png，由 tools/make-og.mjs 生成）+ manifest
+fs.cpSync(path.join(ROOT, 'assets'), path.join(DIST, 'assets'), { recursive: true });
+fs.writeFileSync(path.join(DIST, 'manifest.json'), JSON.stringify({
+  name: 'satloot 工具站', short_name: 'satloot Tools', lang: 'zh-CN', start_url: '/', scope: '/', display: 'browser',
+  background_color: THEME, theme_color: THEME,
+  icons: [{ src: '/assets/logo-192.png', sizes: '192x192', type: 'image/png' }, { src: '/assets/logo-512.png', sizes: '512x512', type: 'image/png' }],
+}, null, 2) + '\n');
 
 const today = new Date().toISOString().slice(0, 10);
 const alt = `<xhtml:link rel="alternate" hreflang="zh-CN" href="${ORIGIN}/"/><xhtml:link rel="alternate" hreflang="en" href="${ORIGIN}/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}/"/>`;
