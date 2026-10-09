@@ -1,0 +1,17 @@
+# SatLoot 工具站客户端预告
+
+> SatLoot 工具站介绍计划面向 iOS、Android、Windows 和 macOS 的行情、资金、监控与研究客户端，并提供上线通知登记。
+
+当前页面为客户端预告与功能介绍，下载入口尚未开放，界面图是功能展示；不能将下载按钮视为已有安装包。客户端版本、可用平台和下载状态应以页面的实际公告及有效下载链接为准。网站上的行情、研究与交易工具说明不构成收益保证。
+
+## 页面入口
+
+- [中文客户端预告](https://tool.satloot.com/): 功能介绍、平台计划与上线通知登记。
+- [English client preview](https://tool.satloot.com/en/): Planned clients and feature overview; downloads are pending.
+
+## 已公开的相关站点
+
+- [SatLoot 项目总览](https://satloot.com/): 其他公开站点与开源仓库入口。
+- [riskdesk 风控面板](https://earn.satloot.com/): 加密市场扫描与交易风控工具，具体访问条件以站内提示为准。
+- [合约模拟器](https://sim.satloot.com/): 使用模拟资金的合约交易练习。
+- [空投雷达](https://airdrop.satloot.com/): 空投、测试网和新项目参与线索。

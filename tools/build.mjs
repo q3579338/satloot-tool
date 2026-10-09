@@ -159,6 +159,7 @@ en = jsonld(en, 'en');
 // ---- 落盘 ----
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(path.join(DIST, 'en'), { recursive: true });
+fs.copyFileSync(path.join(ROOT, 'llms.txt'), path.join(DIST, 'llms.txt'));
 fs.writeFileSync(path.join(DIST, 'index.html'), zh);
 fs.writeFileSync(path.join(DIST, 'en', 'index.html'), en);
 // 静态资源（og.png / logo-*.png，由 tools/make-og.mjs 生成）+ manifest
